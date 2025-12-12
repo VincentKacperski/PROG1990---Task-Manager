@@ -12,19 +12,50 @@ struct Node {
 //Print all tasks in the manager
 void printAllTasks() {
 	//Calculations
-
 }
 
 //Add a task to the end of the list
-void addToEnd() {
-	//Calculations
+void addToEnd(struct Node** head, char* title, char* task, int data) {
+	
+	//create newNode that will go at the end of the list
+	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+	// insert all inputed info into newNode
+	newNode->title = title;
+	newNode->task = task;
+	newNode->data = data;
+	// set the newNode to have nothing after it because it will be the last node in the list
+	newNode->next = NULL;
+
+	// if the list is empty the make the new node the very first node
+	if (*head = NULL) {
+		*head = newNode;
+		return;
+	}
+
+	// loop untill the next value is the end of the list
+	struct Node* temp = *head;
+	while (temp->next != NULL) {
+		temp = temp->next;
+	}
+	// make the end of the list the newNode
+	temp->next = newNode;
 
 }
 
 //Add a task to the beginning of the list
-void addToBeginning() {
-	//Calculations
+void addToBeginning(struct Node** head, char* title, char* task, int data) {
+	
+	// create newNode that will go before head
+	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+	// insert all inputed info into newNode
+	newNode->title = title;
+	newNode->task = task;
+	newNode->data = data;
+	// make the newNode go before head
+	newNode->next = *head;
 
+	// set head back to the start by making it equal to new node
+	*head = newNode;
 }
 
 //Add a task within the list
@@ -92,10 +123,10 @@ int main() {
 			printAllTasks();
 			break;
 		case 2:
-			addToBeginning();
+			addToBeginning(&head, "title test", "task test", 1);
 			break;
 		case 3:
-			addToEnd();
+			addToEnd(&head, "title test", "task test", 1);
 			break;
 		case 4:
 			addAtPoint();
