@@ -10,9 +10,45 @@ struct Node {
 };
 
 //Print all tasks in the manager
-void printAllTasks() {
+void printAllTasks(struct Node** head) {
+	
 	//Calculations
+	struct Node* temp = *head;
 
+	while (temp != NULL) {
+
+		//Print all task information
+		printf("Title: %s", temp->title);
+		printf("Task ID: %s", temp->task);
+		printf("Task Data: %d", temp->data);
+
+		//Go to the next task
+		temp = temp->next;
+
+	}
+
+}
+
+//Print all tasks in the manager
+void searchTask(struct Node** head, int dataID) {
+
+	//Calculations
+	struct Node* temp = *head;
+
+	while (temp != NULL) {
+
+		//Verifiy the correct ID
+		if (dataID = temp->task) {
+			printf("Title: %s", temp->title);
+			printf("Task ID: %s", temp->task);
+			printf("Task Data: %d", temp->data);
+			break; //Exit the loop
+		}
+
+		//Go to the next task
+		temp = temp->next;
+
+	}
 }
 
 //Add a task to the end of the list
@@ -57,13 +93,14 @@ void displayMenu() {
 	printf("\n");
 	printf("=--------------------------------=\n");
 	printf("1: Print all tasks.\n");
+	printf("2: Search for a task.\n");
 	printf("3: Add a task to the beginning.\n");
-	printf("2: Add a task to the end.\n");
-	printf("4: Add a task at a point.\n");
-	printf("5: Delete a task at the beginning.\n");
-	printf("6: Delete a task at the end.\n");
-	printf("7: Delete a task at a point.\n");
-	printf("8: Exit.\n");
+	printf("4: Add a task to the end.\n");
+	printf("5: Add a task at a point.\n");
+	printf("6: Delete a task at the beginning.\n");
+	printf("7: Delete a task at the end.\n");
+	printf("8: Delete a task at a point.\n");
+	printf("9: Exit.\n");
 	printf("=--------------------------------=\n");
 	printf("\n");
 
@@ -73,8 +110,18 @@ void displayMenu() {
 int main() {
 
 	//Decleration
-	struct Node* head = NULL;
 	int choice = 1;
+	int dataID = 0;
+	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+
+	if (head == NULL) {
+
+		//Error Message
+		printf("\n");
+		printf("Warning: \n");
+		printf("\n");
+
+	}
 
 	//User input
 	while (choice >= 1 && choice <= 7) {
@@ -82,6 +129,7 @@ int main() {
 		//Display menu
 		displayMenu();
 
+		//User input
 		printf("Choose an option from 1-7: ");
 		scanf_s("%d", &choice);
 
@@ -89,36 +137,66 @@ int main() {
 		switch (choice) {
 
 		case 1:
-			printAllTasks();
+
+			//Search for the desired task
+			printAllTasks(&head);
+
 			break;
 		case 2:
-			addToBeginning();
+
+			//Search for the desired task
+			searchTask(&head, dataID);
+
+			//Error Message
+			printf("\n");
+			printf("Error: Invalid input!\n");
+			printf("\n");
+
 			break;
 		case 3:
-			addToEnd();
+
+			addToBeginning();
+
 			break;
 		case 4:
-			addAtPoint();
+
+			addToEnd();
+
 			break;
 		case 5:
-			deleteAtBeginning();
+
+			addAtPoint();
+
 			break;
 		case 6:
-			deleteAtEnd();
+
+			deleteAtBeginning();
+
 			break;
 		case 7:
-			deleteAtPoint();
+
+			deleteAtEnd();
+
 			break;
 		case 8:
+
+			deleteAtPoint();
+
+			break;
+		case 9:
+
 			exit(0); //exit the program
+
 			break;
 
 		default:
+
 			//Display error message
 			printf("\n");
 			printf("Error: Invalid input!\n");
 			printf("\n");
 			choice = 1; //Reset choice
+
 			break;
 
 		}

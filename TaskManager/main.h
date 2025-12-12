@@ -1,5 +1,6 @@
 #pragma once
-void printAllTasks();
+void printAllTasks(struct Node** head);
+void searchTask(struct Node** head, int dataID);
 void addToEnd();
 void addToBeginning();
 void addAtPoint();
