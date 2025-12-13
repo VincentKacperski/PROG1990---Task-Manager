@@ -44,6 +44,8 @@ void searchTask(struct Node** head, int dataID) {
 			printf("Task Data: %d", temp->data);
 			break; //Exit the loop
 		}
+	}
+}
 
 //Add a task to the end of the list
 void addToEnd(struct Node** head, char* title, char* task, int data) {
@@ -96,9 +98,16 @@ void addAtPoint() {
 }
 
 //Add a task at the beginning
-void deleteAtBeginning() {
-	//Calculations
-
+void deleteAtBeginning(struct Node** head) {
+	// check if list is already empty
+	if (*head == NULL) {
+		return;
+	}
+	// make a temp variable, then move the head down one
+	struct Node* temp = *head;
+	*head = temp->next;
+	// free the temp variable
+	free(temp);
 }
 
 //Delete a task at the end
@@ -181,12 +190,12 @@ int main() {
 			break;
 		case 3:
 
-			addToBeginning();
+			addToBeginning(&head, "title", "task", 1);
 
 			break;
 		case 4:
 
-			addToEnd();
+			addToEnd(&head, "title", "task", 1);
 
 			break;
 		case 5:
@@ -196,7 +205,7 @@ int main() {
 			break;
 		case 6:
 
-			deleteAtBeginning();
+			deleteAtBeginning(&head);
 
 			break;
 		case 7:
