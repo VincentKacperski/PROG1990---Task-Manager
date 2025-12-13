@@ -38,12 +38,65 @@ void searchTask(struct Node** head, int dataID) {
 	while (temp != NULL) {
 
 		//Verifiy the correct ID
-		if (dataID = temp->task) {
+		if (dataID == temp->task) {
 			printf("Title: %s", temp->title);
 			printf("Task ID: %s", temp->task);
 			printf("Task Data: %d", temp->data);
-			break; //Exit the loop
 		}
+	}
+}
+
+//Updates information about a task
+void updateTask(struct Node** head, int dataID) {
+
+	//Delaration
+	struct Node* temp = *head;
+	int choice = 0;
+	char* newtask = 0;
+	char* newtitle = 0;
+	int newdata = 0;
+
+	while (temp != NULL) {
+
+		//Verifiy the correct ID
+		if (dataID = temp->task) {
+
+			//Ask the user for a new title
+			printf("Would you like to change the task name?\n");
+			printf("Enter 1 for yes 0 for no: \n");
+			scanf_s("%d", choice);
+			if (choice == 1) {
+				printf("Enter a new title: ");
+				scanf_s("%s", newtask);
+				temp->task = newtask;
+			}
+
+			//Ask the user for a new name
+			printf("Would you like to change the task tile?\n");
+			printf("Enter 1 for yes 0 for no: \n");
+			scanf_s("%d", choice);
+			if (choice == 1) {
+				printf("Enter a new name: ");
+				scanf_s("%s", newtitle);
+				temp->title = newtitle;
+			}
+
+			//Ask the user for a new title
+			printf("Would you like to change any data?\n");
+			printf("Enter 1 for yes 0 for no: \n");
+			scanf_s("%d", choice);
+			if (choice == 1) {
+				printf("Enter new data: ");
+				scanf_s("%d", newdata);
+				temp->data = newdata;
+			}
+			break;
+		}
+
+		//Traverse the list
+		temp = temp->next;
+	}
+}
 
 //Add a task to the end of the list
 void addToEnd(struct Node** head, char* title, char* task, int data) {
@@ -57,7 +110,7 @@ void addToEnd(struct Node** head, char* title, char* task, int data) {
 	// set the newNode to have nothing after it because it will be the last node in the list
 	newNode->next = NULL;
 
-	// if the list is empty the make the new node the very first node
+	// if the list is empty then make the new node the very first node
 	if (*head = NULL) {
 		*head = newNode;
 		return;
@@ -76,7 +129,7 @@ void addToEnd(struct Node** head, char* title, char* task, int data) {
 //Add a task to the beginning of the list
 void addToBeginning(struct Node** head, char* title, char* task, int data) {
 	
-	// create newNode that will go before head
+	//Create newNode that will go before head
 	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
 	// insert all inputed info into newNode
 	newNode->title = title;
@@ -89,6 +142,17 @@ void addToBeginning(struct Node** head, char* title, char* task, int data) {
 	*head = newNode;
 }
 
+void deleteAtBeginning(struct Node** head) {
+	// check if list is already empty
+	if (*head == NULL) {
+		return;
+	}
+	// make a temp variable, then move the head down one
+	struct Node* temp = *head;
+	*head = temp->next;
+	// free the temp variable
+	free(temp);
+}
 //Add a task within the list
 void addAtPoint(struct Node** head, char* title, char* task, int data, int position) {
 
@@ -136,16 +200,24 @@ void addAtPoint(struct Node** head, char* title, char* task, int data, int posit
 
 }
 
-//Add a task at the beginning
-void deleteAtBeginning() {
-	//Calculations
-
-}
-
 //Delete a task at the end
-void deleteAtEnd() {
-	//Calculations
+void deleteAtEnd(struct Node** head) {
 
+	//Declaration
+	struct Node* temp = *head;
+
+	while (temp != NULL) {
+
+		//Free the last node
+		if (temp->next = NULL) {
+			free(temp);
+			temp = NULL;
+		}
+
+		//Traverse the list to the end
+		temp = temp->next;
+
+	}
 }
 
 //Delete a task within the list
@@ -176,9 +248,66 @@ void deleteAtPoint(struct Node** head, int position) {
 
 	//deletes node
 	free(temp->next);
+void deleteAtPoint() {
+	//Calculations
+}
 
-	//temp now points to next node
-	temp->next = next;
+//Add a task within the list
+void addAtPoint() {
+	//Calculations
+}
+
+//Saves list to file
+void fileSave(struct Node** head) {
+	
+	// create the file pointer 
+	FILE* fp = NULL;
+	// make the error check variable
+	errno_t error;
+	// open the file in write mode well catching any errors
+	error = fopen_s(&fp, "save.txt", "w");
+	// check if any errors got catched or the pointer is NULL
+	if (error != 0 || fp == NULL) {
+		printf("There is an error in opening file");
+		return;
+	}
+	// loop through the list and add the information to the file
+	struct Node* temp = *head;
+	while (temp != NULL) {
+		fprintf(fp, "%s\n", temp->title);
+		fprintf(fp, "%s\n", temp->task);
+		fprintf(fp, "%d\n", temp->data);
+		temp = temp->next;
+	}
+	// close the file
+	fclose(fp);
+}
+
+//Loads list from file
+void fileLoad(struct Node** head) {
+
+	// create the file pointer
+	FILE* fp = NULL;
+	// make the error check variable
+	errno_t error;
+	// open the file in read mode well catching any errors
+	error = fopen_s(&fp, "save.txt", "r");
+	// check if any erros got catched or the pointer is NULL
+	if (error != 0 || fp == NULL) {
+		printf("There is an error in opening file");
+	}
+	// create a new node to get the info from the file
+	struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+	// loop through file to collect all information and put into list
+	while (newNode->data != EOF) {
+		fgets(newNode->title, sizeof(newNode->title), fp);
+		fgets(newNode->task, sizeof(newNode->task), fp);
+		fgets(newNode->data, sizeof(newNode->data), fp);
+		addToEnd(head, newNode->title, newNode->task, newNode->data);
+	}
+	// free the node and close the file
+	free(newNode);
+	fclose(fp);
 }
 
 void displayMenu() {
@@ -207,7 +336,7 @@ int main() {
 	int choice = 1;
 	int dataID = 0;
 	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
-
+	
 	if (head == NULL) {
 
 		//Error Message
@@ -216,7 +345,7 @@ int main() {
 		printf("\n");
 
 	}
-
+	
 	//User input
 	while (choice >= 1 && choice <= 7) {
 
@@ -241,45 +370,47 @@ int main() {
 			//Search for the desired task
 			searchTask(&head, dataID);
 
-			//Error Message
-			printf("\n");
-			printf("Error: Invalid input!\n");
-			printf("\n");
-
 			break;
 		case 3:
 
-			addToBeginning();
+			//Adds a task to the beginning of the mamanger
+			addToBeginning(&head, "title", "task", 1);
 
 			break;
 		case 4:
 
-			addToEnd();
+			//Add a task to the end of the manager
+			addToEnd(&head, "title", "task", 1);
 
 			break;
 		case 5:
 
-			addAtPoint(&head, &title, &task, &data, &position);
+			//Add a task within the manager
+			addAtPoint();
 
 			break;
 		case 6:
 
-			deleteAtBeginning();
+			//Delete a task at the beginning of the manager
+			deleteAtBeginning(&head);
 
 			break;
 		case 7:
 
-			deleteAtEnd();
+			//Delete a task at the beginning of the manager
+			deleteAtEnd(&head);
 
 			break;
 		case 8:
 
-			deleteAtPoint(&head, &position);
+			//Delete a task within the manager
+			deleteAtPoint();
 
 			break;
 		case 9:
 
-			exit(0); //exit the program
+			//Exit the program
+			exit(0);
 
 			break;
 
