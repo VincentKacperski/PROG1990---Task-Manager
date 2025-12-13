@@ -142,19 +142,6 @@ void addToBeginning(struct Node** head, char* title, char* task, int data) {
 	*head = newNode;
 }
 
-//Add a task at the beginning
-void deleteAtBeginning(struct Node* head) {
-
-	//Declaration
-	struct Node* searchNode = (struct Node*)malloc(sizeof(struct Node));
-	searchNode = head; //Capture the head address
-	head = head->next; //Assign the address of head to the next node
-	free(searchNode); //Free the previous node that was the head
-	searchNode = NULL; //Eliminate dangeling pointers
-
-}
-
-//Add a task at the beginning
 void deleteAtBeginning(struct Node** head) {
 	// check if list is already empty
 	if (*head == NULL) {
@@ -166,6 +153,7 @@ void deleteAtBeginning(struct Node** head) {
 	// free the temp variable
 	free(temp);
 }
+
 //Delete a task at the end
 void deleteAtEnd(struct Node** head) {
 
@@ -189,7 +177,11 @@ void deleteAtEnd(struct Node** head) {
 //Delete a task within the list
 void deleteAtPoint() {
 	//Calculations
+}
 
+//Add a task within the list
+void addAtPoint() {
+	//Calculations
 }
 
 //Saves list to file
@@ -243,12 +235,6 @@ void fileLoad(struct Node** head) {
 	// free the node and close the file
 	free(newNode);
 	fclose(fp);
-}
-
-//Add a task within the list
-void addAtPoint() {
-	//Calculations
-
 }
 
 void displayMenu() {
@@ -315,13 +301,13 @@ int main() {
 		case 3:
 
 			//Adds a task to the beginning of the mamanger
-			addToBeginning();
+			addToBeginning(&head, "title", "task", 1);
 
 			break;
 		case 4:
 
 			//Add a task to the end of the manager
-			addToEnd();
+			addToEnd(&head, "title", "task", 1);
 
 			break;
 		case 5:
