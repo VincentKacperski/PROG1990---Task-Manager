@@ -46,6 +46,58 @@ void searchTask(struct Node** head, int dataID) {
 	}
 }
 
+//Updates information about a task
+void updateTask(struct Node** head, int dataID) {
+
+	//Delaration
+	struct Node* temp = *head;
+	int choice = 0;
+	char* newtask = 0;
+	char* newtitle = 0;
+	int newdata = 0;
+
+	while (temp != NULL) {
+
+		//Verifiy the correct ID
+		if (dataID = temp->task) {
+
+			//Ask the user for a new title
+			printf("Would you like to change the task name?\n");
+			printf("Enter 1 for yes 0 for no: \n");
+			scanf_s("%d", choice);
+			if (choice == 1) {
+				printf("Enter a new title: ");
+				scanf_s("%s", newtask);
+				temp->task = newtask;
+			}
+
+			//Ask the user for a new name
+			printf("Would you like to change the task tile?\n");
+			printf("Enter 1 for yes 0 for no: \n");
+			scanf_s("%d", choice);
+			if (choice == 1) {
+				printf("Enter a new name: ");
+				scanf_s("%s", newtitle);
+				temp->title = newtitle;
+			}
+
+			//Ask the user for a new title
+			printf("Would you like to change any data?\n");
+			printf("Enter 1 for yes 0 for no: \n");
+			scanf_s("%d", choice);
+			if (choice == 1) {
+				printf("Enter new data: ");
+				scanf_s("%d", newdata);
+				temp->data = newdata;
+			}
+			break;
+		}
+
+		//Traverse the list
+		temp = temp->next;
+	}
+}
+
 //Add a task to the end of the list
 void addToEnd(struct Node** head, char* title, char* task, int data) {
 	
@@ -120,10 +172,6 @@ void deleteAtEnd(struct Node** head) {
 		temp = temp->next;
 
 	}
-}
-
-void deleteAtEnd(struct Node** head) {
-
 }
 
 //Delete a task within the list
