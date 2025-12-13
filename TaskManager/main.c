@@ -42,8 +42,9 @@ void searchTask(struct Node** head, int dataID) {
 			printf("Title: %s", temp->title);
 			printf("Task ID: %s", temp->task);
 			printf("Task Data: %d", temp->data);
-			break; //Exit the loop
 		}
+	}
+}
 
 //Add a task to the end of the list
 void addToEnd(struct Node** head, char* title, char* task, int data) {
@@ -57,7 +58,7 @@ void addToEnd(struct Node** head, char* title, char* task, int data) {
 	// set the newNode to have nothing after it because it will be the last node in the list
 	newNode->next = NULL;
 
-	// if the list is empty the make the new node the very first node
+	// if the list is empty then make the new node the very first node
 	if (*head = NULL) {
 		*head = newNode;
 		return;
@@ -76,7 +77,7 @@ void addToEnd(struct Node** head, char* title, char* task, int data) {
 //Add a task to the beginning of the list
 void addToBeginning(struct Node** head, char* title, char* task, int data) {
 	
-	// create newNode that will go before head
+	//Create newNode that will go before head
 	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
 	// insert all inputed info into newNode
 	newNode->title = title;
@@ -89,26 +90,50 @@ void addToBeginning(struct Node** head, char* title, char* task, int data) {
 	*head = newNode;
 }
 
-//Add a task within the list
-void addAtPoint() {
-	//Calculations
-
-}
-
 //Add a task at the beginning
-void deleteAtBeginning() {
-	//Calculations
+void deleteAtBeginning(struct Node* head) {
+
+	//Declaration
+	struct Node* searchNode = (struct Node*)malloc(sizeof(struct Node));
+	searchNode = head; //Capture the head address
+	head = head->next; //Assign the address of head to the next node
+	free(searchNode); //Free the previous node that was the head
+	searchNode = NULL; //Eliminate dangeling pointers
 
 }
 
 //Delete a task at the end
-void deleteAtEnd() {
-	//Calculations
+void deleteAtEnd(struct Node** head) {
+
+	//Declaration
+	struct Node* temp = *head;
+
+	while (temp != NULL) {
+
+		//Free the last node
+		if (temp->next = NULL) {
+			free(temp);
+			temp = NULL;
+		}
+
+		//Traverse the list to the end
+		temp = temp->next;
+
+	}
+}
+
+void deleteAtEnd(struct Node** head) {
 
 }
 
 //Delete a task within the list
 void deleteAtPoint() {
+	//Calculations
+
+}
+
+//Add a task within the list
+void addAtPoint() {
 	//Calculations
 
 }
@@ -173,45 +198,47 @@ int main() {
 			//Search for the desired task
 			searchTask(&head, dataID);
 
-			//Error Message
-			printf("\n");
-			printf("Error: Invalid input!\n");
-			printf("\n");
-
 			break;
 		case 3:
 
+			//Adds a task to the beginning of the mamanger
 			addToBeginning();
 
 			break;
 		case 4:
 
+			//Add a task to the end of the manager
 			addToEnd();
 
 			break;
 		case 5:
 
+			//Add a task within the manager
 			addAtPoint();
 
 			break;
 		case 6:
 
-			deleteAtBeginning();
+			//Delete a task at the beginning of the manager
+			deleteAtBeginning(&head);
 
 			break;
 		case 7:
 
-			deleteAtEnd();
+			//Delete a task at the beginning of the manager
+			deleteAtEnd(&head);
 
 			break;
 		case 8:
 
+			//Delete a task within the manager
 			deleteAtPoint();
 
 			break;
 		case 9:
 
-			exit(0); //exit the program
+			//Exit the program
+			exit(0);
 
 			break;
 
