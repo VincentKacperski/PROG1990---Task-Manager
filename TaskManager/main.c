@@ -90,8 +90,49 @@ void addToBeginning(struct Node** head, char* title, char* task, int data) {
 }
 
 //Add a task within the list
-void addAtPoint() {
-	//Calculations
+void addAtPoint(struct Node** head, char* title, char* task, int data, int position) {
+
+
+	// create newNode that will go before head
+	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+	newNode->data = data;
+
+	if (position == 1) {
+
+		// insert all inputed info into newNode
+		newNode->title = title;
+		newNode->task = task;
+		newNode->data = data;
+
+		// make the newNode go before head
+		newNode->next = *head;
+
+		// set head back to the start by making it equal to new node
+		*head = newNode;
+		return;
+	}
+
+	//transverses through linked list until reaching user's desired position
+	struct Node* temp = *head;
+	for (int x = 0; temp != NULL && x < position - 1; x++)
+		temp = temp->next;
+
+	//If memory does not exist it returns 
+	if (temp == NULL) {
+		printf("Position out of bounds\n");
+		free(newNode);
+		return;
+
+	//Gives data to node
+	newNode->title = title;
+	newNode->task = task;
+	newNode->data = data;
+
+	//Creates 
+	newNode->next = temp->next;
+	temp.next = newNode;
+
+	}
 
 }
 
@@ -108,9 +149,36 @@ void deleteAtEnd() {
 }
 
 //Delete a task within the list
-void deleteAtPoint() {
-	//Calculations
+void deleteAtPoint(struct Node** head, int position) {
 
+	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+	//If head = NULL, then there is no elements in list
+	if (*head == NULL) return;
+
+	//Using "temp" to free memory
+	struct Node* temp = *head;
+	if (position == 1) {
+		*head = temp->next;
+		free(temp);
+	}
+
+	// Loop to transverse throught linked list 
+	for (int x = 0; temp->next != NULL && x < position - 1; x++) {
+		temp = temp->next;
+	}
+
+	//returns if temp is NULL
+	if (temp == NULL || temp->next == NULL) return;
+
+	//Creates pointer after desired deleted Node
+	struct Node* next = temp->next->next;
+
+	//deletes node
+	free(temp->next);
+
+	//temp now points to next node
+	temp->next = next;
 }
 
 void displayMenu() {
@@ -191,7 +259,7 @@ int main() {
 			break;
 		case 5:
 
-			addAtPoint();
+			addAtPoint(&head, &title, &task, &data, &position);
 
 			break;
 		case 6:
@@ -206,7 +274,7 @@ int main() {
 			break;
 		case 8:
 
-			deleteAtPoint();
+			deleteAtPoint(&head, &position);
 
 			break;
 		case 9:
