@@ -248,13 +248,8 @@ void deleteAtPoint(struct Node** head, int position) {
 
 	//deletes node
 	free(temp->next);
-void deleteAtPoint() {
-	//Calculations
-}
-
-//Add a task within the list
-void addAtPoint() {
-	//Calculations
+	//temp now points to next node
+	temp->next = next;
 }
 
 //Saves list to file
