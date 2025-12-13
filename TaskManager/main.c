@@ -18,9 +18,9 @@ void printAllTasks(struct Node** head) {
 	while (temp != NULL) {
 
 		//Print all task information
-		printf("Title: %s", temp->title);
-		printf("Task ID: %s", temp->task);
-		printf("Task Data: %d", temp->data);
+		printf("Title: %s\n", temp->title);
+		printf("Task ID: %s\n", temp->task);
+		printf("Task Data: %d\n", temp->data);
 
 		//Go to the next task
 		temp = temp->next;
@@ -39,9 +39,9 @@ void searchTask(struct Node** head, int dataID) {
 
 		//Verifiy the correct ID
 		if (dataID == temp->task) {
-			printf("Title: %s", temp->title);
-			printf("Task ID: %s", temp->task);
-			printf("Task Data: %d", temp->data);
+			printf("Title: %s\n", temp->title);
+			printf("Task ID: %s\n", temp->task);
+			printf("Task Data: %d\n", temp->data);
 		}
 	}
 }
@@ -63,7 +63,7 @@ void updateTask(struct Node** head, int dataID) {
 
 			//Ask the user for a new title
 			printf("Would you like to change the task name?\n");
-			printf("Enter 1 for yes 0 for no: \n");
+			printf("Enter 1 for yes 0 for no: ");
 			scanf_s("%d", choice);
 			if (choice == 1) {
 				printf("Enter a new title: ");
@@ -73,7 +73,7 @@ void updateTask(struct Node** head, int dataID) {
 
 			//Ask the user for a new name
 			printf("Would you like to change the task tile?\n");
-			printf("Enter 1 for yes 0 for no: \n");
+			printf("Enter 1 for yes 0 for no: ");
 			scanf_s("%d", choice);
 			if (choice == 1) {
 				printf("Enter a new name: ");
@@ -83,7 +83,7 @@ void updateTask(struct Node** head, int dataID) {
 
 			//Ask the user for a new title
 			printf("Would you like to change any data?\n");
-			printf("Enter 1 for yes 0 for no: \n");
+			printf("Enter 1 for yes 0 for no: ");
 			scanf_s("%d", choice);
 			if (choice == 1) {
 				printf("Enter new data: ");
@@ -116,7 +116,7 @@ void addToEnd(struct Node** head, char* title, char* task, int data) {
 		return;
 	}
 
-	// loop untill the next value is the end of the list
+	// loop until the next value is the end of the list
 	struct Node* temp = *head;
 	while (temp->next != NULL) {
 		temp = temp->next;
@@ -159,14 +159,13 @@ void addAtPoint(struct Node** head, char* title, char* task, int data, int posit
 
 	// create newNode that will go before head
 	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+
+	// insert all inputed info into newNode
+	newNode->title = title;
+	newNode->task = task;
 	newNode->data = data;
 
 	if (position == 1) {
-
-		// insert all inputed info into newNode
-		newNode->title = title;
-		newNode->task = task;
-		newNode->data = data;
 
 		// make the newNode go before head
 		newNode->next = *head;
@@ -186,17 +185,11 @@ void addAtPoint(struct Node** head, char* title, char* task, int data, int posit
 		printf("Position out of bounds\n");
 		free(newNode);
 		return;
-
-	//Gives data to node
-	newNode->title = title;
-	newNode->task = task;
-	newNode->data = data;
+	}
 
 	//Creates 
 	newNode->next = temp->next;
 	temp.next = newNode;
-
-	}
 
 }
 
@@ -223,8 +216,6 @@ void deleteAtEnd(struct Node** head) {
 //Delete a task within the list
 void deleteAtPoint(struct Node** head, int position) {
 
-	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-
 	//If head = NULL, then there is no elements in list
 	if (*head == NULL) return;
 
@@ -240,7 +231,7 @@ void deleteAtPoint(struct Node** head, int position) {
 		temp = temp->next;
 	}
 
-	//returns if temp is NULL
+	//Checks if there is another node after deleted one
 	if (temp == NULL || temp->next == NULL) return;
 
 	//Creates pointer after desired deleted Node
@@ -263,7 +254,7 @@ void fileSave(struct Node** head) {
 	error = fopen_s(&fp, "save.txt", "w");
 	// check if any errors got catched or the pointer is NULL
 	if (error != 0 || fp == NULL) {
-		printf("There is an error in opening file");
+		printf("File does not exist");
 		return;
 	}
 	// loop through the list and add the information to the file
@@ -278,6 +269,8 @@ void fileSave(struct Node** head) {
 	fclose(fp);
 }
 
+
+//ONLY FOR START OF PROGRAM
 //Loads list from file
 void fileLoad(struct Node** head) {
 
@@ -318,7 +311,8 @@ void displayMenu() {
 	printf("6: Delete a task at the beginning.\n");
 	printf("7: Delete a task at the end.\n");
 	printf("8: Delete a task at a point.\n");
-	printf("9: Exit.\n");
+	printf("9: Save all data\n");
+	printf("10: Exit.\n");
 	printf("=--------------------------------=\n");
 	printf("\n");
 
@@ -330,6 +324,7 @@ int main() {
 	//Decleration
 	int choice = 1;
 	int dataID = 0;
+	int loadData;
 	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
 	
 	if (head == NULL) {
@@ -340,15 +335,32 @@ int main() {
 		printf("\n");
 
 	}
+
+	printf("Would you like to load your previous data?: ");
+	printf("Enter 1 (yes) or 2 (no): ");
+	scanf_s("%d", &loadData);
+	
+	switch (loadData) {
+
+	case 1:
+		printf("Loading all Data from file.\n");
+		fileLoad(struct Node** head);
+		break;
+
+	default:
+		break;
+	}
+
+
 	
 	//User input
-	while (choice >= 1 && choice <= 7) {
+	while (choice >= 1 && choice <= 10) {
 
 		//Display menu
 		displayMenu();
 
 		//User input
-		printf("Choose an option from 1-7: ");
+		printf("Choose an option from 1-10: ");
 		scanf_s("%d", &choice);
 
 		//Menu and function calls
@@ -402,7 +414,12 @@ int main() {
 			deleteAtPoint();
 
 			break;
+
 		case 9:
+			fileSave(&head);
+
+			break;
+		case 10:
 
 			//Exit the program
 			exit(0);
