@@ -38,7 +38,7 @@ void searchTask(struct Node** head, int dataID) {
 	while (temp != NULL) {
 
 		//Verifiy the correct ID
-		if (dataID = temp->task) {
+		if (dataID == temp->task) {
 			printf("Title: %s", temp->title);
 			printf("Task ID: %s", temp->task);
 			printf("Task Data: %d", temp->data);
@@ -122,6 +122,59 @@ void deleteAtPoint() {
 
 }
 
+//Saves list to file
+void fileSave(struct Node** head) {
+	
+	// create the file pointer 
+	FILE* fp = NULL;
+	// make the error check variable
+	errno_t error;
+	// open the file in write mode well catching any errors
+	error = fopen_s(&fp, "save.txt", "w");
+	// check if any errors got catched or the pointer is NULL
+	if (error != 0 || fp == NULL) {
+		printf("There is an error in opening file");
+		return;
+	}
+	// loop through the list and add the information to the file
+	struct Node* temp = *head;
+	while (temp != NULL) {
+		fprintf(fp, "%s\n", temp->title);
+		fprintf(fp, "%s\n", temp->task);
+		fprintf(fp, "%d\n", temp->data);
+		temp = temp->next;
+	}
+	// close the file
+	fclose(fp);
+}
+
+//Loads list from file
+void fileLoad(struct Node** head) {
+
+	// create the file pointer
+	FILE* fp = NULL;
+	// make the error check variable
+	errno_t error;
+	// open the file in read mode well catching any errors
+	error = fopen_s(&fp, "save.txt", "r");
+	// check if any erros got catched or the pointer is NULL
+	if (error != 0 || fp == NULL) {
+		printf("There is an error in opening file");
+	}
+	// create a new node to get the info from the file
+	struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+	// loop through file to collect all information and put into list
+	while (newNode->data != EOF) {
+		fgets(newNode->title, sizeof(newNode->title), fp);
+		fgets(newNode->task, sizeof(newNode->task), fp);
+		fgets(newNode->data, sizeof(newNode->data), fp);
+		addToEnd(head, newNode->title, newNode->task, newNode->data);
+	}
+	// free the node and close the file
+	free(newNode);
+	fclose(fp);
+}
+
 void displayMenu() {
 
 	//Display menu
@@ -148,7 +201,7 @@ int main() {
 	int choice = 1;
 	int dataID = 0;
 	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
-
+	
 	if (head == NULL) {
 
 		//Error Message
@@ -157,7 +210,7 @@ int main() {
 		printf("\n");
 
 	}
-
+	
 	//User input
 	while (choice >= 1 && choice <= 7) {
 
@@ -191,7 +244,7 @@ int main() {
 		case 3:
 
 			addToBeginning(&head, "title", "task", 1);
-
+			
 			break;
 		case 4:
 

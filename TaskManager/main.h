@@ -7,3 +7,5 @@ void addAtPoint();
 void deleteAtBeginning(struct Node** head);
 void deleteAtEnd();
 void deleteAtPoint();
+void fileSave(struct Node** head);
+void fileLoad(struct Node** head);
