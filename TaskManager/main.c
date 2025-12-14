@@ -298,6 +298,33 @@ void fileLoad(struct Node** head) {
 	fclose(fp);
 }
 
+char* getString() {
+
+	char* string = NULL;
+	int c;
+	size_t size = 0;
+	size_t maxSize = 10;
+
+	string = (char*)malloc(maxSize * sizeof(char));
+
+	while (c = getc() != '\n' && c != EOF) {
+
+		string[size++] = (char)c;
+
+		if (size >= maxSize - 1) {
+			maxSize += 20;
+			char* temp = (char*)realloc(string, maxSize * sizeof(char));
+			string = temp;
+		}
+
+	}
+
+	return string;
+
+}
+
+
+
 void displayMenu() {
 
 	//Display menu
