@@ -51,43 +51,43 @@ void updateTask(struct Node** head, int dataID) {
 
 	//Delaration
 	struct Node* temp = *head;
-	int choice = 0;
-	char* newtask = 0;
-	char* newtitle = 0;
-	int newdata = 0;
+	int choice;
+	char* newtask;
+	char* newtitle;
+	int newdata;
 
 	while (temp != NULL) {
 
 		//Verifiy the correct ID
-		if (dataID = temp->task) {
+		if (dataID == temp->data) {
 
 			//Ask the user for a new title
 			printf("Would you like to change the task name?\n");
 			printf("Enter 1 for yes 0 for no: ");
-			scanf_s("%d", choice);
+			scanf_s("%d", &choice);
 			if (choice == 1) {
 				printf("Enter a new title: ");
-				scanf_s("%s", newtask);
+				scanf_s("%s", &newtask);
 				temp->task = newtask;
 			}
 
 			//Ask the user for a new name
 			printf("Would you like to change the task tile?\n");
 			printf("Enter 1 for yes 0 for no: ");
-			scanf_s("%d", choice);
+			scanf_s("%d", &choice);
 			if (choice == 1) {
 				printf("Enter a new name: ");
-				scanf_s("%s", newtitle);
+				scanf_s("%s", &newtitle);
 				temp->title = newtitle;
 			}
 
 			//Ask the user for a new title
 			printf("Would you like to change any data?\n");
 			printf("Enter 1 for yes 0 for no: ");
-			scanf_s("%d", choice);
+			scanf_s("%d", &choice);
 			if (choice == 1) {
 				printf("Enter new data: ");
-				scanf_s("%d", newdata);
+				scanf_s("%d", &newdata);
 				temp->data = newdata;
 			}
 			break;
@@ -189,7 +189,7 @@ void addAtPoint(struct Node** head, char* title, char* task, int data, int posit
 
 	//Creates 
 	newNode->next = temp->next;
-	temp.next = newNode;
+	temp->next = newNode;
 
 }
 
@@ -324,7 +324,7 @@ int main() {
 	//Decleration
 	int choice = 1;
 	int dataID = 0;
-	int loadData;
+	int loadData, position;
 	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
 	
 	if (head == NULL) {
@@ -344,7 +344,7 @@ int main() {
 
 	case 1:
 		printf("Loading all Data from file.\n");
-		fileLoad(struct Node** head);
+		fileLoad(&head);
 		break;
 
 	default:
@@ -393,7 +393,7 @@ int main() {
 		case 5:
 
 			//Add a task within the manager
-			addAtPoint();
+			addAtPoint(&head, "title", "task", 1, position);
 
 			break;
 		case 6:
@@ -411,7 +411,7 @@ int main() {
 		case 8:
 
 			//Delete a task within the manager
-			deleteAtPoint();
+			deleteAtPoint(&head, &position);
 
 			break;
 
