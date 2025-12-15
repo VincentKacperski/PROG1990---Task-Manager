@@ -111,7 +111,7 @@ void addToEnd(struct Node** head, char* title, char* task, int data) {
 	newNode->next = NULL;
 
 	// if the list is empty then make the new node the very first node
-	if (*head = NULL) {
+	if (*head == NULL) {
 		*head = newNode;
 		return;
 	}
@@ -278,6 +278,13 @@ void fileLoad(struct Node** head) {
 	FILE* fp = NULL;
 	// make the error check variable
 	errno_t error;
+	// variables for retreving info from file
+	int c;
+	int i = 0;
+	int size = 0;
+	int maxSize = 10;
+	char* string;
+
 	// open the file in read mode well catching any errors
 	error = fopen_s(&fp, "save.txt", "r");
 	// check if any erros got catched or the pointer is NULL
@@ -287,11 +294,46 @@ void fileLoad(struct Node** head) {
 	// create a new node to get the info from the file
 	struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
 	// loop through file to collect all information and put into list
-	while (newNode->data != EOF) {
-		fgets(newNode->title, sizeof(newNode->title), fp);
-		fgets(newNode->task, sizeof(newNode->task), fp);
-		fgets(newNode->data, sizeof(newNode->data), fp);
-		addToEnd(head, newNode->title, newNode->task, newNode->data);
+	while (1 == 1) {
+		i++;
+		string = NULL;
+		size = 0;
+		maxSize = 10;
+		string = (char*)malloc(maxSize * sizeof(char));
+		while ((c = getc(fp)) != '\n' && c != EOF) {
+			
+			string[size++] = (char)c;
+
+			if (size >= maxSize - 1) {
+				maxSize += 4;
+				char* temp = (char*)realloc(string, maxSize * sizeof(char));
+				string = temp;
+			}
+
+		}
+		char* temp = realloc(string, sizeof(char) * (size + 1));
+		string = temp;
+		string[size] = '\0';
+		switch (i) {
+		case 1:
+			newNode->title = string;
+			break;
+		case 2:
+			newNode->task = string;
+			break;
+		case 3:
+			newNode->data = atoi(string);
+			break;
+		default:
+			i = 0;
+			addToEnd(head, newNode->title, newNode->task, newNode->data);
+			if (c == EOF) {
+				free(newNode);
+				fclose(fp);
+				return;
+			}
+		}
+		
 	}
 	// free the node and close the file
 	free(newNode);
@@ -365,7 +407,7 @@ int main() {
 	int choice = 1;
 	int dataID = 0;
 	int loadData, position;
-	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+	struct Node* head = NULL;
 	
 	char* title = NULL;
 	char* task = NULL;
