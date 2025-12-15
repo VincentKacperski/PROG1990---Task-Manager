@@ -329,8 +329,13 @@ void deleteAtEnd(struct Node** head) {
 	//Declaration
 	struct Node* temp = *head;
 
-	while (temp != NULL) {
+	if (temp->next == NULL) {
+		*head = temp->next;
+		free(temp);
+		return;
+	}
 
+	while (temp != NULL) {
 		//Free the last node
 		if (temp->next = NULL) {
 			free(temp);
