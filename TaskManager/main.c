@@ -29,6 +29,32 @@ void printAllTasks(struct Node** head) {
 
 }
 
+//Print a range of manager tasks
+void printRange(struct Node** head, int range) {
+
+	//Calculations
+	struct Node* temp = *head;
+	int nodeCount = 1;
+
+	while (nodeCount != range || temp != NULL) {
+
+		//Print all task information
+		printf("Title: %s\n", temp->title);
+		printf("Task ID: %s\n", temp->task);
+		printf("Task Data: %d\n", temp->data);
+
+		//Go to the next task
+		temp = temp->next;
+		nodeCount++;
+
+	}
+
+	printf("\n");
+	printf("No node was found with that data!\n");
+	printf("\n");
+
+}
+
 //Print all tasks in the manager
 void searchTask(struct Node** head, int dataID) {
 
@@ -47,7 +73,7 @@ void searchTask(struct Node** head, int dataID) {
 }
 
 //Updates information about a task
-void updateTask(struct Node** head, int dataID) {
+void updateTask(struct Node** head, int position) {
 
 	//Delaration
 	struct Node* temp = *head;
@@ -59,7 +85,7 @@ void updateTask(struct Node** head, int dataID) {
 	while (temp != NULL) {
 
 		//Verifiy the correct ID
-		if (dataID == temp->data) {
+		if (position == temp->data) {
 
 			//Ask the user for a new title
 			printf("Would you like to change the task name?\n");
@@ -153,6 +179,7 @@ void deleteAtBeginning(struct Node** head) {
 	// free the temp variable
 	free(temp);
 }
+
 //Add a task within the list
 void addAtPoint(struct Node** head, char* title, char* task, int data, int position) {
 
@@ -298,6 +325,7 @@ void fileLoad(struct Node** head) {
 	fclose(fp);
 }
 
+//Get string function
 void getString(char** finalString) {
 
 	// defining variables
@@ -336,23 +364,23 @@ void getString(char** finalString) {
 
 }
 
-
-
 void displayMenu() {
 
 	//Display menu
 	printf("\n");
 	printf("=--------------------------------=\n");
 	printf("1: Print all tasks.\n");
-	printf("2: Search for a task.\n");
-	printf("3: Add a task to the beginning.\n");
-	printf("4: Add a task to the end.\n");
-	printf("5: Add a task at a point.\n");
-	printf("6: Delete a task at the beginning.\n");
-	printf("7: Delete a task at the end.\n");
-	printf("8: Delete a task at a point.\n");
-	printf("9: Save all data\n");
-	printf("10: Exit.\n");
+	printf("2: Print a range of tasks.\n");
+	printf("3: Search for a task.\n");
+	printf("4: Update a task in progress.\n");
+	printf("5: Add a task to the beginning.\n");
+	printf("6: Add a task to the end.\n");
+	printf("7: Add a task at a point.\n");
+	printf("8: Delete a task at the beginning.\n");
+	printf("9: Delete a task at the end.\n");
+	printf("10: Delete a task at a point.\n");
+	printf("11: Save all data\n");
+	printf("12: Exit.\n");
 	printf("=--------------------------------=\n");
 	printf("\n");
 
@@ -363,8 +391,9 @@ int main() {
 
 	//Decleration
 	int choice = 1;
-	int dataID = 0;
-	int loadData, position;
+	int position = 1;
+	int range = 1;
+	int loadValue = 0;
 	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
 	
 	char* title = NULL;
@@ -380,11 +409,14 @@ int main() {
 
 	}
 
-	printf("Would you like to load your previous data?: ");
-	printf("Enter 1 (yes) or 2 (no): ");
-	scanf_s("%d", &loadData);
+	while (loadValue != 1 && loadValue != 2) {
+		printf("Would you like to load your previous data?: ");
+		printf("Enter 1 (yes) or 2 (no): ");
+		scanf_s("%d", &loadValue);
+		printf("\n");
+	}
 	
-	switch (loadData) {
+	switch (loadValue) {
 
 	case 1:
 		printf("Loading all Data from file.\n");
@@ -395,8 +427,6 @@ int main() {
 		break;
 	}
 
-	
-	
 	//User input
 	while (choice >= 1 && choice <= 10) {
 
@@ -419,62 +449,125 @@ int main() {
 		case 2:
 
 			//Search for the desired task
-			searchTask(&head, dataID);
+
+			//Error checking for input
+			while (position <= 0) {
+				printf("How many nodes do you want to print?\n");
+				printf("Range (integer): ");
+				scanf_s("%d", &range);
+				printf("\n");
+			}
+
+			//Print the functions desired
+			printRange(&head, range);
 
 			break;
 		case 3:
-			//Adds a task to the beginning of the mamanger
-			
-			printf("Input the title to your task: ");
-			getString(&title);
-			printf("Input your task: ");
-			getString(&task);
-			printf("Input extra data (number): ");
-			scanf_s("%d", &data);
-			addToBeginning(&head, title, task, data);
+
+			//Search for the desired task
+
+			//Error checking for input
+			while (position <= 0) {
+				printf("Which node would you like to modify?\n");
+				printf("Node number: ");
+				scanf_s("%d", &position);
+				printf("\n");
+			}
+
+			//Search and print the desired node
+			searchTask(&head, position);
 
 			break;
+
 		case 4:
 
-			printf("Input the title to your task: ");
-			getString(&title);
-			printf("Input your task: ");
-			getString(&task);
-			printf("Input extra data (number): ");
-			scanf_s("%d", &data);
-			addToEnd(&head, title, task, data);
+			//Search for the desired task
+
+			//Error checking for input
+			while (position <= 0) {
+				printf("which node would you like to modify?\n");
+				printf("Node number: ");
+				scanf_s("%d", &position);
+				printf("\n");
+			}
+
+			//Update the desired task
+			updateTask(&head, position);
 
 			break;
 		case 5:
+			
+			//Adds a task to the beginning of the mamanger
 
-			//Add a task within the manager
-			addAtPoint(&head, "title", "task", 1, position);
+			//Enter data for the new mode
+			printf("Input the title to your task: ");
+			getString(&title);
+			printf("Input your task: ");
+			getString(&task);
+			printf("Input extra data (number): ");
+			scanf_s("%d", &data);
+			//Function call
+			addToBeginning(&head, title, task, data);
 
 			break;
 		case 6:
+
+			//Adds a task to the end of the manager
+
+			//Enter data for the new mode
+			printf("Input the title to your task: ");
+			getString(&title);
+			printf("Input your task: ");
+			getString(&task);
+			printf("Input extra data (number): ");
+			scanf_s("%d", &data);
+
+			//Add the new node to the end of the list
+			addToEnd(&head, title, task, data);
+
+			break;
+		case 7:
+
+			//Adds a task to a point in the manager
+
+			//Enter data for the new mode
+			printf("Input the title to your task: ");
+			getString(&title);
+			printf("Input your task: ");
+			getString(&task);
+			printf("Input extra data (number): ");
+			scanf_s("%d", &data);
+
+			//Add a task within the manager
+			addAtPoint(&head, title, task, 1, position);
+
+			break;
+		case 8:
 
 			//Delete a task at the beginning of the manager
 			deleteAtBeginning(&head);
 
 			break;
-		case 7:
+		case 9:
 
 			//Delete a task at the beginning of the manager
 			deleteAtEnd(&head);
 
 			break;
-		case 8:
+		case 10:
 
 			//Delete a task within the manager
 			deleteAtPoint(&head, &position);
 
 			break;
 
-		case 9:
+		case 11:
+
+			//Save all data to the file
 			fileSave(&head);
 
 			break;
-		case 10:
+		case 12:
 
 			//Exit the program
 			exit(0);
@@ -493,6 +586,5 @@ int main() {
 
 		}
 	}
-
 	return 0;
 }
