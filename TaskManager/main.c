@@ -31,8 +31,9 @@ void printAllTasks(struct Node** head) {
 
 		//Print all task information
 		printf("Title: %s\n", temp->title);
-		printf("Task ID: %s\n", temp->task);
-		printf("Task Data: %d\n", temp->data);
+		printf("Task: %s\n", temp->task);
+		printf("Data: %d\n", temp->data);
+		printf("\n");
 
 		//Go to the next task
 		temp = temp->next;
@@ -42,11 +43,13 @@ void printAllTasks(struct Node** head) {
 }
 
 //Print a range of manager tasks
-void printRange(struct Node** head, int range) {
+void printRange(struct Node** head, int begin, int end) {
 
 	//Calculations
 	struct Node* temp = *head;
-	int nodeCount = 1;
+	begin--;
+	end--;
+
 
 	//Errpr handleing
 	if (temp == NULL) {
@@ -59,25 +62,35 @@ void printRange(struct Node** head, int range) {
 		return;
 
 	}
-
-	while (nodeCount <= range && temp->next != NULL) {
+	// move the temp to the correct point in the list
+	for (int i = 0; i < begin && temp != NULL; i++) {
+		temp = temp->next;
+	}
+	// if that point does not exist, tell user and return
+	if (temp == NULL) {
+		printf("Your list is not large enough to print this range.\n");
+		return;
+	}
+	// loop through and print all tasks between the range
+	for (int i = begin; i <= end && temp != NULL; i++) {
 
 		//Print all task information
 		printf("\n");
 		printf("Title: %s\n", temp->title);
-		printf("Task ID: %s\n", temp->task);
-		printf("Task Data: %d\n", temp->data);
+		printf("Task: %s\n", temp->task);
+		printf("Data: %d\n", temp->data);
+		printf("\n");
 
 		//Go to the next task
 		temp = temp->next;
-		nodeCount++;
 
 	}
-
-	printf("\n");
-	printf("No such task has been found!\n");
-	printf("\n");
-
+	// if the range is larger then the size of the list, tell the user
+	if (temp == NULL) {
+		printf("\n");
+		printf("The list does not have that many tasks in it so it printed until the end!\n");
+		printf("\n");
+	}
 }
 
 //Print all tasks in the manager
@@ -104,8 +117,8 @@ void searchTask(struct Node** head, int position) {
 		//Verifiy the correct ID
 		if (nodeCount == position) {
 			printf("Title: %s\n", temp->title);
-			printf("Task ID: %s\n", temp->task);
-			printf("Task Data: %d\n", temp->data);
+			printf("Task: %s\n", temp->task);
+			printf("Data: %d\n", temp->data);
 			return; //Exit the proccess
 		}
 
@@ -149,7 +162,7 @@ void updateTask(struct Node** head, int position) {
 		if (nodeCount == position) {
 
 			//Ask the user for a new title
-			printf("Would you like to change the task?\n");
+			printf("Would you like to change the title?\n");
 			printf("Enter 1 (yes) 0 (no): ");
 			scanf_s("%d", &choice);
 			if (choice == 1) {
@@ -159,7 +172,7 @@ void updateTask(struct Node** head, int position) {
 			}
 
 			//Ask the user for a new name
-			printf("Would you like to change the task name?\n");
+			printf("Would you like to change the task?\n");
 			printf("Enter 1 (yes) 0 (no): ");
 			scanf_s("%d", &choice);
 			if (choice == 1) {
@@ -177,7 +190,7 @@ void updateTask(struct Node** head, int position) {
 				scanf_s("%d", &newdata);
 				temp->data = newdata;
 			}
-			break;
+			return;
 		}
 
 		//Traverse the list
@@ -412,18 +425,6 @@ void fileSave(struct Node** head) {
 //Loads list from file //Working
 void fileLoad(struct Node** head) {
 
-	//If head = NULL, do not save any changes
-	if (*head == NULL) {
-
-		printf("\n");
-		printf("Nothing to load! Create a new\n");
-		printf("manager by adding at beginning\n");
-		printf("or end to save any changes.\n");
-		printf("\n");
-		return;
-
-	}
-
 	// create the file pointer
 	FILE* fp = NULL;
 	// make the error check variable
@@ -439,7 +440,8 @@ void fileLoad(struct Node** head) {
 	error = fopen_s(&fp, "save.txt", "r");
 	// check if any erros got catched or the pointer is NULL
 	if (error != 0 || fp == NULL) {
-		printf("There is an error in opening file");
+		printf("Error: No such file created!\n");
+		return;
 	}
 	// create a new node to get the info from the file
 	struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
@@ -565,7 +567,8 @@ int main() {
 	//Decleration
 	int choice = 1;
 	int position = -1;
-	int range = -1;
+	int rangeBegin = -1;
+	int rangeEnd = -1;
 	int loadValue = 0;
 	struct Node* head = NULL;
 	char* title = NULL;
@@ -629,18 +632,45 @@ int main() {
 		case 2:
 
 			//Search for the desired task
+			// loop until user inputs good values
+			while (rangeEnd - rangeBegin < 0 || rangeBegin <= 0 || rangeEnd <= 0) {
 
-			//Error checking for input
-			while (range <= 0) {
-				printf("How many nodes do you want to print?\n");
-				printf("Range (integer): ");
-				scanf_s("%d", &range);
-				printf("\n");
+
+				//Error checking for input
+				while (rangeBegin <= 0) {
+					printf("What node would you like to start printing at?\n");
+					printf("Range (integer): ");
+					scanf_s("%d", &rangeBegin);
+					printf("\n");
+				}
+				//Error checking for input
+				while (rangeEnd <= 0) {
+					printf("What node would you like to stop printing at?\n");
+					printf("Range (integer): ");
+					scanf_s("%d", &rangeEnd);
+					printf("\n");
+				}
+				// reprint screen if loop is going to happen
+				if (rangeEnd - rangeBegin < 0) {
+					// clear screen
+					system("cls");
+					// Display menu
+					displayMenu();
+					// Tell user what was done wrong
+					printf("The inputs must be beginning first, then end last.\n");
+					
+				}
 			}
+			// clear screen
+			system("cls");
+			//Display menu
+			displayMenu();
 
 			//Print the functions desired
-			printRange(&head, range);
-			range = -1; //Reset range
+			printRange(&head, rangeBegin, rangeEnd);
+			//Reset range
+			rangeBegin = -1; 
+			rangeEnd = -1;
 
 			break;
 		case 3:
