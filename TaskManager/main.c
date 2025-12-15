@@ -15,6 +15,18 @@ void printAllTasks(struct Node** head) {
 	//Calculations
 	struct Node* temp = *head;
 
+	//Errpr handleing
+	if (temp == NULL) {
+
+		printf("\n");
+		printf("No manager has been created.\n");
+		printf("Add at the end or beginning\n");
+		printf("to create a new list.\n");
+		printf("\n");
+		return;
+
+	}
+
 	while (temp != NULL) {
 
 		//Print all task information
@@ -36,9 +48,22 @@ void printRange(struct Node** head, int range) {
 	struct Node* temp = *head;
 	int nodeCount = 1;
 
-	while (nodeCount != range || temp != NULL) {
+	//Errpr handleing
+	if (temp == NULL) {
+
+		printf("\n");
+		printf("No manager has been created.\n");
+		printf("Add at the end or beginning\n");
+		printf("to create a new list.\n");
+		printf("\n");
+		return;
+
+	}
+
+	while (nodeCount <= range && temp->next != NULL) {
 
 		//Print all task information
+		printf("\n");
 		printf("Title: %s\n", temp->title);
 		printf("Task ID: %s\n", temp->task);
 		printf("Task Data: %d\n", temp->data);
@@ -50,26 +75,49 @@ void printRange(struct Node** head, int range) {
 	}
 
 	printf("\n");
-	printf("No node was found with that data!\n");
+	printf("No such task has been found!\n");
 	printf("\n");
 
 }
 
 //Print all tasks in the manager
-void searchTask(struct Node** head, int dataID) {
+void searchTask(struct Node** head, int position) {
 
-	//Calculations
+	//Declaration
 	struct Node* temp = *head;
+	int nodeCount = 1;
 
-	while (temp != NULL) {
+	//Error handleing
+	if (temp == NULL) {
+
+		printf("\n");
+		printf("No manager has been created.\n");
+		printf("Add at the end or beginning\n");
+		printf("to create a new list.\n");
+		printf("\n");
+		return;
+
+	}
+
+	while (temp != NULL && nodeCount <= position) {
 
 		//Verifiy the correct ID
-		if (dataID == temp->task) {
+		if (nodeCount == position) {
 			printf("Title: %s\n", temp->title);
 			printf("Task ID: %s\n", temp->task);
 			printf("Task Data: %d\n", temp->data);
+			return; //Exit the proccess
 		}
+
+		//Go to the next task
+		temp = temp->next;
+		nodeCount++;
 	}
+
+	printf("\n");
+	printf("No such task has been found!\n");
+	printf("\n");
+
 }
 
 //Updates information about a task
@@ -78,41 +126,54 @@ void updateTask(struct Node** head, int position) {
 	//Delaration
 	struct Node* temp = *head;
 	int choice;
-	char* newtask;
-	char* newtitle;
+	int nodeCount = 1;
+	char* newtask = NULL;
+	char* newtitle = NULL;
 	int newdata;
+
+	//Error handleing
+	if (temp == NULL) {
+
+		printf("\n");
+		printf("No manager has been created.\n");
+		printf("Add at the end or beginning\n");
+		printf("to create a new list.\n");
+		printf("\n");
+		return;
+
+	}
 
 	while (temp != NULL) {
 
 		//Verifiy the correct ID
-		if (position == temp->data) {
+		if (nodeCount == position) {
 
 			//Ask the user for a new title
-			printf("Would you like to change the task name?\n");
-			printf("Enter 1 for yes 0 for no: ");
+			printf("Would you like to change the task?\n");
+			printf("Enter 1 (yes) 0 (no): ");
 			scanf_s("%d", &choice);
 			if (choice == 1) {
-				printf("Enter a new title: ");
-				scanf_s("%s", &newtask);
-				temp->task = newtask;
-			}
-
-			//Ask the user for a new name
-			printf("Would you like to change the task tile?\n");
-			printf("Enter 1 for yes 0 for no: ");
-			scanf_s("%d", &choice);
-			if (choice == 1) {
-				printf("Enter a new name: ");
-				scanf_s("%s", &newtitle);
+				printf("Enter new title: ");
+				getString(&newtitle);
 				temp->title = newtitle;
 			}
 
-			//Ask the user for a new title
-			printf("Would you like to change any data?\n");
-			printf("Enter 1 for yes 0 for no: ");
+			//Ask the user for a new name
+			printf("Would you like to change the task name?\n");
+			printf("Enter 1 (yes) 0 (no): ");
 			scanf_s("%d", &choice);
 			if (choice == 1) {
-				printf("Enter new data: ");
+				printf("Enter new name: ");
+				getString(&newtask);
+				temp->task = newtask;
+			}
+
+			//Ask the user for a new title
+			printf("Would you like to modify data?\n");
+			printf("Enter 1 (yes) 0 (no): ");
+			scanf_s("%d", &choice);
+			if (choice == 1) {
+				printf("Enter data: ");
 				scanf_s("%d", &newdata);
 				temp->data = newdata;
 			}
@@ -121,7 +182,30 @@ void updateTask(struct Node** head, int position) {
 
 		//Traverse the list
 		temp = temp->next;
+		nodeCount++;
+
 	}
+
+	printf("\n");
+	printf("No such task has been found!\n");
+	printf("\n");
+
+}
+
+//Add a task to the beginning of the list
+void addToBeginning(struct Node** head, char* title, char* task, int data) {
+
+	//Create newNode that will go before head
+	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+	// insert all inputed info into newNode
+	newNode->title = title;
+	newNode->task = task;
+	newNode->data = data;
+	// make the newNode go before head
+	newNode->next = *head;
+
+	// set head back to the start by making it equal to new node
+	*head = newNode;
 }
 
 //Add a task to the end of the list
@@ -152,34 +236,6 @@ void addToEnd(struct Node** head, char* title, char* task, int data) {
 
 }
 
-//Add a task to the beginning of the list
-void addToBeginning(struct Node** head, char* title, char* task, int data) {
-	
-	//Create newNode that will go before head
-	struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-	// insert all inputed info into newNode
-	newNode->title = title;
-	newNode->task = task;
-	newNode->data = data;
-	// make the newNode go before head
-	newNode->next = *head;
-
-	// set head back to the start by making it equal to new node
-	*head = newNode;
-}
-
-void deleteAtBeginning(struct Node** head) {
-	// check if list is already empty
-	if (*head == NULL) {
-		return;
-	}
-	// make a temp variable, then move the head down one
-	struct Node* temp = *head;
-	*head = temp->next;
-	// free the temp variable
-	free(temp);
-}
-
 //Add a task within the list
 void addAtPoint(struct Node** head, char* title, char* task, int data, int position) {
 
@@ -196,10 +252,10 @@ void addAtPoint(struct Node** head, char* title, char* task, int data, int posit
 
 		// make the newNode go before head
 		newNode->next = *head;
-
 		// set head back to the start by making it equal to new node
 		*head = newNode;
 		return;
+
 	}
 
 	//transverses through linked list until reaching user's desired position
@@ -220,8 +276,42 @@ void addAtPoint(struct Node** head, char* title, char* task, int data, int posit
 
 }
 
+void deleteAtBeginning(struct Node** head) {
+
+	//Error handleing
+	if (*head == NULL) {
+
+		printf("\n");
+		printf("Nothing to delete! Add\n");
+		printf("at the end or beginning\n");
+		printf("to create a new manager.\n");
+		printf("\n");
+		return;
+
+	}
+
+	// make a temp variable, then move the head down one
+	struct Node* temp = *head;
+	*head = temp->next;
+	// free the temp variable
+	free(temp);
+}
+
+
 //Delete a task at the end
 void deleteAtEnd(struct Node** head) {
+
+	//Error handleing
+	if (*head == NULL) {
+
+		printf("\n");
+		printf("Nothing to delete! Add\n");
+		printf("at the end or beginning\n");
+		printf("to create a new manager.\n");
+		printf("\n");
+		return;
+
+	}
 
 	//Declaration
 	struct Node* temp = *head;
@@ -244,7 +334,16 @@ void deleteAtEnd(struct Node** head) {
 void deleteAtPoint(struct Node** head, int position) {
 
 	//If head = NULL, then there is no elements in list
-	if (*head == NULL) return;
+	if (*head == NULL) {
+
+		printf("\n");
+		printf("Nothing to delete! Add\n");
+		printf("at the end or beginning\n");
+		printf("to create a new manager.\n");
+		printf("\n");
+		return;
+
+	}
 
 	//Using "temp" to free memory
 	struct Node* temp = *head;
@@ -270,8 +369,20 @@ void deleteAtPoint(struct Node** head, int position) {
 	temp->next = next;
 }
 
-//Saves list to file
+//Saves list to file //Working
 void fileSave(struct Node** head) {
+
+	//If head = NULL, do not save any changes
+	if (*head == NULL) {
+
+		printf("\n");
+		printf("Nothing to save! Create a new\n");
+		printf("manager by adding at beginning\n");
+		printf("or end to save any changes!\n");
+		printf("\n");
+		return;
+
+	}
 	
 	// create the file pointer 
 	FILE* fp = NULL;
@@ -298,8 +409,20 @@ void fileSave(struct Node** head) {
 
 
 //ONLY FOR START OF PROGRAM
-//Loads list from file
+//Loads list from file //Working
 void fileLoad(struct Node** head) {
+
+	//If head = NULL, do not save any changes
+	if (*head == NULL) {
+
+		printf("\n");
+		printf("Nothing to load! Create a new\n");
+		printf("manager by adding at beginning\n");
+		printf("or end to save any changes.\n");
+		printf("\n");
+		return;
+
+	}
 
 	// create the file pointer
 	FILE* fp = NULL;
@@ -441,23 +564,22 @@ int main() {
 
 	//Decleration
 	int choice = 1;
-	int position = 1;
-	int range = 1;
+	int position = -1;
+	int range = -1;
 	int loadValue = 0;
 	struct Node* head = NULL;
-	
 	char* title = NULL;
 	char* task = NULL;
 	int data;
 
-	if (head == NULL) {
+	/*if (head == NULL) {
 
 		//Error Message
 		printf("\n");
 		printf("Warning: \n");
 		printf("\n");
-
-	}
+		
+	}*/
 
 	while (loadValue != 1 && loadValue != 2) {
 		printf("Would you like to load your previous data?: ");
@@ -469,8 +591,10 @@ int main() {
 	switch (loadValue) {
 
 	case 1:
-		printf("Loading all Data from file.\n");
+
+		//Load all file data on program start
 		fileLoad(&head);
+
 		break;
 
 	default:
@@ -481,10 +605,10 @@ int main() {
 	displayMenu();
 
 	//User input
-	while (choice >= 1 && choice <= 10) {
+	while (choice >= 1 && choice <= 12) {
 
 		//User input
-		printf("Choose an option from 1-10: ");
+		printf("Choose an option from 1-12: ");
 		scanf_s("%d", &choice);
 
 		// clear screen
@@ -507,7 +631,7 @@ int main() {
 			//Search for the desired task
 
 			//Error checking for input
-			while (position <= 0) {
+			while (range <= 0) {
 				printf("How many nodes do you want to print?\n");
 				printf("Range (integer): ");
 				scanf_s("%d", &range);
@@ -516,6 +640,7 @@ int main() {
 
 			//Print the functions desired
 			printRange(&head, range);
+			range = -1; //Reset range
 
 			break;
 		case 3:
@@ -524,14 +649,15 @@ int main() {
 
 			//Error checking for input
 			while (position <= 0) {
-				printf("Which node would you like to modify?\n");
-				printf("Node number: ");
+				printf("Which node would you like to see?\n");
+				printf("Node number (integer): ");
 				scanf_s("%d", &position);
 				printf("\n");
 			}
 
 			//Search and print the desired node
 			searchTask(&head, position);
+			position = -1; //Reset position
 
 			break;
 
@@ -549,6 +675,7 @@ int main() {
 
 			//Update the desired task
 			updateTask(&head, position);
+			position = -1; //Reset position
 
 			break;
 		case 5:
@@ -586,6 +713,15 @@ int main() {
 
 			//Adds a task to a point in the manager
 
+			//Error checking for input
+			position = -1;
+			while (position <= 0) {
+				printf("Where would you like to add a new node?\n");
+				printf("Location (integer): ");
+				scanf_s("%d", &position);
+				printf("\n");
+			}
+
 			//Enter data for the new mode
 			printf("Input the title to your task: ");
 			getString(&title);
@@ -602,7 +738,7 @@ int main() {
 
 			//Delete a task at the beginning of the manager
 			deleteAtBeginning(&head);
-			
+
 			break;
 		case 9:
 
