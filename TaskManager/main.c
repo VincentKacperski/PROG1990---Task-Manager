@@ -322,11 +322,14 @@ void fileLoad(struct Node** head) {
 	struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
 	// loop through file to collect all information and put into list
 	while (1 == 1) {
+		// increase counter to know which variable the next line is for
 		i++;
+		// reseting varibles for next string
 		string = NULL;
 		size = 0;
 		maxSize = 10;
 		string = (char*)malloc(maxSize * sizeof(char));
+		// loop through file until it reach the end of the line or the end of the file
 		while ((c = getc(fp)) != '\n' && c != EOF) {
 			
 			string[size++] = (char)c;
@@ -338,9 +341,11 @@ void fileLoad(struct Node** head) {
 			}
 
 		}
+		// remove extra memory that is being used
 		char* temp = realloc(string, sizeof(char) * (size + 1));
 		string = temp;
 		string[size] = '\0';
+		// check which varible the line
 		switch (i) {
 		case 1:
 			newNode->title = string;
@@ -352,9 +357,11 @@ void fileLoad(struct Node** head) {
 			newNode->data = atoi(string);
 			break;
 		default:
+			// reset the counter and add the run the addToEnd() function to input the info to the list
 			i = 0;
 			addToEnd(head, newNode->title, newNode->task, newNode->data);
 			if (c == EOF) {
+				// if the end of the file has been reached, free the node and close the file, then end the function
 				free(newNode);
 				fclose(fp);
 				return;
@@ -362,6 +369,7 @@ void fileLoad(struct Node** head) {
 		}
 		
 	}
+	// This point should not be reached but is here just in case
 	// free the node and close the file
 	free(newNode);
 	fclose(fp);
@@ -386,9 +394,9 @@ void getString(char** finalString) {
 	
 	// as characters get inputed, allocate memory untill the user does next line (enter)
 	while ((c = getchar()) != '\n' && c != EOF) {
-
+		// add the character to the string
 		string[size++] = (char)c;
-
+		// if the string size is not big enough, allocate memory to the string
 		if (size >= maxSize - 1) {
 			maxSize += 4;
 			char* temp = (char*)realloc(string, maxSize * sizeof(char));
@@ -436,7 +444,7 @@ int main() {
 	int position = 1;
 	int range = 1;
 	int loadValue = 0;
-	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+	struct Node* head = NULL;
 	
 	char* title = NULL;
 	char* task = NULL;
@@ -469,15 +477,21 @@ int main() {
 		break;
 	}
 
+	//Display menu
+	displayMenu();
+
 	//User input
 	while (choice >= 1 && choice <= 10) {
-
-		//Display menu
-		displayMenu();
 
 		//User input
 		printf("Choose an option from 1-10: ");
 		scanf_s("%d", &choice);
+
+		// clear screen
+		system("cls");
+
+		//Display menu
+		displayMenu();
 
 		//Menu and function calls
 		switch (choice) {
@@ -588,7 +602,7 @@ int main() {
 
 			//Delete a task at the beginning of the manager
 			deleteAtBeginning(&head);
-
+			
 			break;
 		case 9:
 
@@ -607,6 +621,7 @@ int main() {
 
 			//Save all data to the file
 			fileSave(&head);
+			printf("File Saved\n");
 
 			break;
 		case 12:
@@ -627,6 +642,7 @@ int main() {
 			break;
 
 		}
+		printf("\n");
 	}
 	return 0;
 }
