@@ -298,28 +298,41 @@ void fileLoad(struct Node** head) {
 	fclose(fp);
 }
 
-char* getString() {
+void getString(char** finalString) {
 
+	// defining variables
+	int size = 0;
+	int maxSize = 10;
 	char* string = NULL;
 	int c;
-	size_t size = 0;
-	size_t maxSize = 10;
 
+	// allocate string some memory
 	string = (char*)malloc(maxSize * sizeof(char));
 
-	while (c = getc() != '\n' && c != EOF) {
+	// bug fix
+	if ((c = getchar()) != '\n') {
+		string[size++] = (char)c;
+	}
+	
+	// as characters get inputed, allocate memory untill the user does next line (enter)
+	while ((c = getchar()) != '\n' && c != EOF) {
 
 		string[size++] = (char)c;
 
 		if (size >= maxSize - 1) {
-			maxSize += 20;
+			maxSize += 4;
 			char* temp = (char*)realloc(string, maxSize * sizeof(char));
 			string = temp;
 		}
 
 	}
+	//fix memory amount
+	char* temp = realloc(string, sizeof(char) * (size + 1));
+	string = temp;
+	string[size] = '\0';
 
-	return string;
+	// set final string to the string that was gotten from the function so it can be sent out of the function
+	*finalString = string;
 
 }
 
@@ -354,6 +367,10 @@ int main() {
 	int loadData, position;
 	struct Node* head = (struct Node*)malloc(sizeof(struct Node));
 	
+	char* title = NULL;
+	char* task = NULL;
+	int data;
+
 	if (head == NULL) {
 
 		//Error Message
@@ -378,7 +395,7 @@ int main() {
 		break;
 	}
 
-
+	
 	
 	//User input
 	while (choice >= 1 && choice <= 10) {
@@ -406,15 +423,26 @@ int main() {
 
 			break;
 		case 3:
-
 			//Adds a task to the beginning of the mamanger
-			addToBeginning(&head, "title", "task", 1);
+			
+			printf("Input the title to your task: ");
+			getString(&title);
+			printf("Input your task: ");
+			getString(&task);
+			printf("Input extra data (number): ");
+			scanf_s("%d", &data);
+			addToBeginning(&head, title, task, data);
 
 			break;
 		case 4:
 
-			//Add a task to the end of the manager
-			addToEnd(&head, "title", "task", 1);
+			printf("Input the title to your task: ");
+			getString(&title);
+			printf("Input your task: ");
+			getString(&task);
+			printf("Input extra data (number): ");
+			scanf_s("%d", &data);
+			addToEnd(&head, title, task, data);
 
 			break;
 		case 5:

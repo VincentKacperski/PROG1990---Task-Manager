@@ -9,4 +9,4 @@ void deleteAtEnd();
 void deleteAtPoint();
 void fileSave(struct Node** head);
 void fileLoad(struct Node** head);
-char* getString();
+void getString(char* string);
