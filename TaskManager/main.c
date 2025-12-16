@@ -455,6 +455,7 @@ void fileLoad(struct Node** head) {
 	struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
 	// loop through file to collect all information and put into list
 	while (1 == 1) {
+
 		// increase counter to know which variable the next line is for
 		i++;
 		// reseting varibles for next string
@@ -463,8 +464,15 @@ void fileLoad(struct Node** head) {
 		maxSize = 10;
 		string = (char*)malloc(maxSize * sizeof(char));
 		// loop through file until it reach the end of the line or the end of the file
-		while ((c = getc(fp)) != '\n' && c != EOF) {
+		while ((c = getc(fp)) != '\n') {
 			
+			if (c == EOF) {
+				// if the end of the file has been reached, free the node and close the file, then end the function
+				free(newNode);
+				fclose(fp);
+				return;
+			}
+
 			string[size++] = (char)c;
 
 			if (size >= maxSize - 1) {
@@ -488,17 +496,10 @@ void fileLoad(struct Node** head) {
 			break;
 		case 3:
 			newNode->data = atoi(string);
-			break;
-		default:
+			free(string);
 			// reset the counter and add the run the addToEnd() function to input the info to the list
 			i = 0;
 			addToEnd(head, newNode->title, newNode->task, newNode->data);
-			if (c == EOF) {
-				// if the end of the file has been reached, free the node and close the file, then end the function
-				free(newNode);
-				fclose(fp);
-				return;
-			}
 		}
 		
 	}
