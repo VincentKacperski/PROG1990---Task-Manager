@@ -852,3 +852,10 @@ int main() {
 	}
 	return 0;
 }
+
+//References
+//https://www.youtube.com/watch?v=Qp3WatLL_Hc
+//https://www.youtube.com/watch?v=TpgxJupHATQ
+//https://stackoverflow.com/questions/79712299/what-is-the-cleanest-way-to-clear-the-console-in-c
+//GeeksforGeeks. (2025b, September 20). File handling in C. https://www.geeksforgeeks.org/c/basics-file-handling-c/
+//GeeksforGeeks. (2025a, July 23).C file pointer. https://www.geeksforgeeks.org/c/c-file-pointer
