@@ -630,12 +630,26 @@ int main() {
 	displayMenu();
 
 	//User input
-	while (choice >= 1 && choice <= 12) {
-
-		//User input
+	while (choice <= 12 && choice > 0) {
 		printf("Choose an option from 1-12: ");
-		scanf_s("%d", &choice);
 
+		//If loadValue equals 1 integer then break
+		if (scanf_s("%d", &choice) == 1) {
+			choice = (int)choice;
+
+			//Print Invalid input if choice not between 1 - 12
+			if (choice > 12 || choice <= 0) {
+				printf("Invalid Input\n");
+
+			}
+		}
+		//Get's rid of invalid Keyboard inputs
+		else {
+			printf("Invalid input\n");
+			while (getchar() != '\n');
+			continue;
+		}
+		
 		// clear screen
 		system("cls");
 
@@ -830,12 +844,7 @@ int main() {
 
 		default:
 
-			//Display error message
-			printf("\n");
-			printf("Error: Invalid input!\n");
-			printf("\n");
 			choice = 1; //Reset choice
-
 			break;
 
 		}
