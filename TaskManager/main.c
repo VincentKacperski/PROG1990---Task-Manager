@@ -261,7 +261,7 @@ void addAtPoint(struct Node** head, char* title, char* task, int data, int posit
 	newNode->task = task;
 	newNode->data = data;
 
-	if (position == 1) {
+	if (position == 1 ) {
 
 		// make the newNode go before head
 		newNode->next = *head;
@@ -273,7 +273,7 @@ void addAtPoint(struct Node** head, char* title, char* task, int data, int posit
 
 	//transverses through linked list until reaching user's desired position
 	struct Node* temp = *head;
-	for (int x = 0; temp != NULL && x < position - 1; x++)
+	for (int x = 1; temp != NULL && x < position - 1; x++)
 		temp = temp->next;
 
 	//If memory does not exist it returns 
@@ -335,6 +335,7 @@ void deleteAtEnd(struct Node** head) {
 		return;
 	}
 
+	//If only one structure in list
 	while (temp != NULL) {
 		//Free the last node
 		if (temp->next = NULL) {
@@ -352,7 +353,7 @@ void deleteAtEnd(struct Node** head) {
 void deleteAtPoint(struct Node** head, int position) {
 
 	//If head = NULL, then there is no elements in list
-	if (*head == NULL) {
+	if (*head == NULL || position <= 0) {
 
 		printf("\n");
 		printf("Nothing to delete! Add\n");
@@ -368,16 +369,18 @@ void deleteAtPoint(struct Node** head, int position) {
 	if (position == 1) {
 		*head = temp->next;
 		free(temp);
+		return;
 	}
 
 	// Loop to transverse throught linked list 
-	for (int x = 0; temp->next != NULL && x < position - 1; x++) {
+	for (int x = 1; temp->next != NULL && x < position - 1; x++) {
 		temp = temp->next;
 	}
 
 	//Checks if there is another node after deleted one
-	if (temp == NULL || temp->next == NULL) return;
-
+	if (temp == NULL || temp->next == NULL) {
+		return;
+	}
 	//Creates pointer after desired deleted Node
 	struct Node* next = temp->next->next;
 
@@ -783,8 +786,17 @@ int main() {
 			break;
 		case 10:
 
+			//Error checking for input
+			position = -1;
+			while (position <= 0) {
+				printf("Where would you like to delete a node?\n");
+				printf("Location (integer): ");
+				scanf_s("%d", &position);
+				printf("\n");
+			}
+
 			//Delete a task within the manager
-			deleteAtPoint(&head, &position);
+			deleteAtPoint(&head, position);
 
 			break;
 
