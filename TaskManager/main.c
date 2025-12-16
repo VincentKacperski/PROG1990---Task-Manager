@@ -573,6 +573,7 @@ void displayMenu() {
 int main() {
 
 	//Decleration
+	int result;
 	int choice = 1;
 	int position = -1;
 	int rangeBegin = -1;
@@ -592,24 +593,36 @@ int main() {
 		
 	}*/
 
+
 	while (loadValue != 1 && loadValue != 2) {
 		printf("Would you like to load your previous data?: ");
 		printf("Enter 1 (yes) or 2 (no): ");
-		scanf_s("%d", &loadValue);
-		printf("\n");
+
+
+		//If loadValue equals 1 integer then break
+		if (scanf_s("%d", &loadValue) == 1) {
+			if (loadValue > 2 || loadValue == 0) {
+				printf("Invalid Input\n");
+			}
+		}
+		else {
+			printf("Invalid input\n");
+			while (getchar() != '\n');
+		}
+
+
+
+		/*if (loadValue != 1) {
+			while (getchar() != "\n");
+			printf("Invalid Input, please input 1 or 2\n");
+			loadValue = 0;
+
+		}*/
 	}
-	
-	switch (loadValue) {
 
-	case 1:
 
-		//Load all file data on program start
+	if (loadValue == 1) {
 		fileLoad(&head);
-
-		break;
-
-	default:
-		break;
 	}
 
 	//Display menu
