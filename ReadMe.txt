@@ -42,7 +42,8 @@ addAtEnd() functions.
 -Included error handleing for the printAllTasks(), searchTask(), updateTask, printRange()
 deleteAtPoint(), deleteAtEnd and the deleteAtBeginning() functions to invalidate integer
 inputs.
--Improved user documentation by adding commentsa and fixing program typos.
+-Created and finished the README.txt file and added all refrence links
+-Improved user documentation by adding comments and fixing program typos.
 
 Testing Details
 -Tested all functions for invalid integer inputs such as negative values.
