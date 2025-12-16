@@ -18,32 +18,35 @@ Overview: The program performs the following tasks...
 Roles and Responisibilities
 
 [Nate]
--Developed the function deleteAtPoint() and addAtAPoint() function
+-Developed the function deleteAtPoint() and addAtAPoint() functions.
 -Performed testing of the deleteAtEnd(), deleteAtBeginning()
 and deleteAtPoint functions.
--Performed testing of the deleteAtPoint() functions
+-Performed testing of the deleteAtPoint() functions.
 -Added error handeling for the main menu and file load on program 
-start to handle string and floating point inputs
+start to handle string, integer, floating point, and negative integer
+inputs.
 
 [Caleb]
--Developed the addAtEnd() function and addAtBeginning() function;
+-Developed the addAtEnd() function and addAtBeginning() functions.
 -Developed the fileSave() and fileLoad() functions that allow the user
 to save all requested data into a file.
+-Developed the getString() function that allowed for flexible string inputs.
 -Performed testing on the fileSave() and fileLoad() functions and
-solved issues related to data correpution
+solved issues related to data correpution.
+-Performed testeing and validation for the getString() function.
 
 [Vincent]
--Developed the printAllTasks(), searchTask(), updateTask and the printRange() function
+-Developed the printAllTasks(), searchTask(), updateTask and the printRange() function.
 -Tested the printAllTasks(), searchTask(), updateTask() and printRange(), addAtBeginning()
 addAtEnd() functions.
 -Included error handleing for the printAllTasks(), searchTask(), updateTask, printRange()
 deleteAtPoint(), deleteAtEnd and the deleteAtBeginning() functions to invalidate integer
 inputs.
--Improved user documentation by adding commentsa and fixing program typos
+-Improved user documentation by adding commentsa and fixing program typos.
 
 Testing Details
--Tested all functions for invalid integer inputs such as negative values
--Tested all functions for invalid floating point inputs such as negative values
--Tested the main menu and file load upon program start was tested for string inputs
+-Tested all functions for invalid integer inputs such as negative values.
+-Tested all functions for invalid floating point inputs such as negative values.
+-Tested the main menu and file load upon program start was tested for string inputs.
 -The fileSave function as tested to make sure all data was stored correctly in
 sequential order.
