@@ -602,7 +602,7 @@ int main() {
 
 		//If loadValue equals 1 integer then break
 		if (scanf_s("%d", &loadValue) == 1) {
-			if (loadValue > 2 || loadValue == 0) {
+			if (loadValue > 2 || loadValue <= 0) {
 				printf("Invalid Input\n");
 			}
 		}
